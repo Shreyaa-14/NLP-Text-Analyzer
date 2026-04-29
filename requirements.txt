@@ -1,0 +1,8 @@
+streamlit
+langdetect
+textstat
+vaderSentiment
+plotly
+pandas
+transformers
+torch
