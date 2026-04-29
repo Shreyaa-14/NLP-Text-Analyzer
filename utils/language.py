@@ -1,6 +1,16 @@
 import fasttext
+import os
+import urllib.request
 
-model = fasttext.load_model("lid.176.bin")
+MODEL_PATH = "lid.176.bin"
+
+if not os.path.exists(MODEL_PATH):
+    urllib.request.urlretrieve(
+        "https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin",
+        MODEL_PATH
+    )
+
+model = fasttext.load_model(MODEL_PATH)
 
 LANG_MAP = {
     "en": ("English", "🇺🇸"),
