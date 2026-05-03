@@ -1,39 +1,59 @@
-import fasttext
-import os
-import urllib.request
+from langdetect import detect_langs, DetectorFactory
 
-MODEL_PATH = "lid.176.bin"
-
-if not os.path.exists(MODEL_PATH):
-    urllib.request.urlretrieve(
-        "https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin",
-        MODEL_PATH
-    )
-
-model = fasttext.load_model(MODEL_PATH)
+DetectorFactory.seed = 0
 
 LANG_MAP = {
     "en": ("English", "🇺🇸"),
     "hi": ("Hindi", "🇮🇳"),
-    "it": ("Italian", "🇮🇹"),
+    "es": ("Spanish", "🇪🇸"),
     "fr": ("French", "🇫🇷"),
     "de": ("German", "🇩🇪"),
-    "es": ("Spanish", "🇪🇸"),
+    "it": ("Italian", "🇮🇹"),
+    "pt": ("Portuguese", "🇵🇹"),
+    "ru": ("Russian", "🇷🇺"),
+    "ja": ("Japanese", "🇯🇵"),
     "ko": ("Korean", "🇰🇷"),
-    "kn": ("Kannada", "🇮🇳")
+    "zh-cn": ("Chinese", "🇨🇳"),
+    "zh-tw": ("Chinese", "🇨🇳"),
+    "ar": ("Arabic", "🇸🇦"),
+    "bn": ("Bengali", "🇧🇩"),
+    "ta": ("Tamil", "🇮🇳"),
+    "te": ("Telugu", "🇮🇳"),
+    "mr": ("Marathi", "🇮🇳"),
+    "gu": ("Gujarati", "🇮🇳"),
+    "pa": ("Punjabi", "🇮🇳"),
+    "ur": ("Urdu", "🇵🇰"),
+    "kn": ("Kannada", "🇮🇳"),
+    "nl": ("Dutch", "🇳🇱"),
+    "tr": ("Turkish", "🇹🇷"),
+    "pl": ("Polish", "🇵🇱"),
+    "ro": ("Romanian", "🇷🇴"),
+    "sv": ("Swedish", "🇸🇪"),
+    "no": ("Norwegian", "🇳🇴"),
+    "da": ("Danish", "🇩🇰"),
+    "fi": ("Finnish", "🇫🇮"),
 }
 
 def detect_language(text):
     try:
-        prediction = model.predict(text)
+        clean_text = text.strip()
 
-        lang_code = prediction[0][0].replace("__label__", "")
-        confidence = prediction[1][0]
+        if not clean_text:
+            return "Unknown", "🌐", 0.0
+
+        # Very short text is unreliable
+        if len(clean_text.split()) < 3:
+            return "Text too short", "🌐", 0.0
+
+        result = detect_langs(clean_text)[0]
+
+        lang_code = result.lang
+        confidence = round(result.prob * 100, 2)
 
         lang_name, flag = LANG_MAP.get(lang_code, (lang_code.upper(), "🌐"))
 
-        return lang_name, flag, round(confidence * 100, 2)
+        return lang_name, flag, confidence
 
     except Exception as e:
-        print("ERROR:", e)
-        return "Unknown", 0.0
+        print("LANGUAGE DETECTION ERROR:", e)
+        return "Unknown", "🌐", 0.0

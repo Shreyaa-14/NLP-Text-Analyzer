@@ -6,3 +6,5 @@ plotly
 pandas
 transformers
 torch
+deep-translator
+fasttext-wheel

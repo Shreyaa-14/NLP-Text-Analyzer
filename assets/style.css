@@ -1,136 +1,381 @@
-/* ---------- REMOVE DEFAULT STREAMLIT HEADER ---------- */
+/* ---------- STREAMLIT CLEANUP ---------- */
 header[data-testid="stHeader"] {
     display: none;
 }
 
-/* ---------- LOGO IMAGE ---------- */
-.logo-img {
-    width: 45px;
-    height: 45px;
-    object-fit: contain;
-}
-
-/* ---------- REMOVE SIDEBAR ---------- */
 section[data-testid="stSidebar"] {
     display: none;
 }
 
-/* ---------- MAIN BACKGROUND ---------- */
+.block-container {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+}
+
 .stApp {
-    background-color: #f8fafc;
+    background:
+        radial-gradient(circle at top left, rgba(13, 148, 136, 0.10), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
 }
 
-/* ---------- GLOBAL TEXT ---------- */
-body, p, span, div, label {
-    color: #000000 !important;
+body, p, span, div, label, h1, h2, h3, h4, li {
+    color: #0f172a !important;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* ---------- HEADER NAVBAR ---------- */
-.header {
-    display: flex;
-    justify-content: space-between;
+/* ---------- HEADER RIBBON ---------- */
+div[data-testid="stHorizontalBlock"]:has(.brand-wrap) {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid #dbe4ea;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+    padding: 30px 58px;
+    margin: 0 !important;
+    width: 100%;
     align-items: center;
-    background: white;
-    padding: 15px 30px;
-    border-bottom: 1px solid #e2e8f0;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 999;
 }
 
-/* Logo */
-.logo {
+.brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo-img {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+}
+
+.brand-title {
+    font-size: 42px;
+    font-weight: 850;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+.brand-subtitle {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #64748b !important;
+    letter-spacing: 0.4px;
+}
+
+/* ---------- NAV BUTTONS ---------- */
+div[data-testid="stHorizontalBlock"]:has(.brand-wrap) .stButton {
+    display: flex;
+    justify-content: center;
+}
+
+div[data-testid="stHorizontalBlock"]:has(.brand-wrap) .stButton > button {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #111827 !important;
+    border-radius: 14px !important;
+    padding: 12px 28px !important;
+    min-width: 135px !important;
+    white-space: nowrap !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04) !important;
+    transition: all 0.2s ease;
+}
+
+div[data-testid="stHorizontalBlock"]:has(.brand-wrap) .stButton > button:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #111827 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10) !important;
+}
+
+/* ---------- WIDTH CONTROL ---------- */
+.hero,
+.page-hero,
+.card,
+.stTextArea,
+.stTabs,
+hr,
+[data-testid="stPlotlyChart"] {
+    max-width: 1220px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* ---------- HOME HERO ---------- */
+.hero {
+    text-align: center;
+    padding: 74px 24px 34px;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: #e6f6f4;
+    color: #0f766e !important;
+    border: 1px solid #bde7e2;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: 58px;
+    font-weight: 900;
+    margin: 0 0 12px;
+    letter-spacing: -1.4px;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #475569 !important;
+    margin: 0;
+}
+
+/* ---------- PAGE HERO ---------- */
+.page-hero {
+    text-align: center;
+    padding: 58px 24px 28px;
+}
+
+.page-hero h2 {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin: 0 0 10px;
+}
+
+.page-hero p {
+    font-size: 18px;
+    color: #64748b !important;
+    margin: 0;
+}
+
+/* ---------- CARD ---------- */
+.card {
+    background: rgba(255, 255, 255, 0.97) !important;
+    padding: 34px !important;
+    margin-top: 28px !important;
+    margin-bottom: 32px !important;
+    border-radius: 24px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08) !important;
+}
+
+.card h3 {
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.card h4 {
     font-size: 22px;
-    font-weight: bold;
+    margin-top: 24px;
+    color: #0f766e !important;
 }
 
-.logo-main {
-    color: black;
+.card p,
+.card li {
+    font-size: 18px;
+    line-height: 1.7;
 }
 
-.logo-accent {
-    color: #7c3aed;
+.result-card {
+    margin-top: 28px !important;
 }
 
-/* ---------- NAV BUTTON STYLE ---------- */
-.stButton>button {
-    background: transparent;
-    color: black !important;
-    border: none;
-    font-weight: 500;
-    padding: 8px 10px;
+/* ---------- FEATURE CARDS ---------- */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 28px 0;
 }
 
-/* Hover effect */
-.stButton>button:hover {
-    color: #7c3aed !important;
+.feature-box {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    padding: 24px !important;
+    min-height: 150px;
+    transition: all 0.25s ease;
 }
 
-/* ---------- ACTIVE NAV (OPTIONAL CLASS) ---------- */
-.active-nav {
-    color: #7c3aed !important;
-    border-bottom: 2px solid #7c3aed;
+.feature-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+}
+
+.feature-box h4 {
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+    color: #0f766e !important;
+}
+
+.feature-box p {
+    font-size: 16px !important;
+    color: #64748b !important;
+    margin: 0 !important;
 }
 
 /* ---------- TEXT AREA ---------- */
+.stTextArea {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+.stTextArea label {
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+}
+
 .stTextArea textarea {
-    background-color: white;
-    color: black !important;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 22px !important;
+    padding: 18px !important;
+    font-size: 17px !important;
+    line-height: 1.6 !important;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.07) !important;
+    transition: all 0.25s ease;
+}
+
+.stTextArea textarea:focus {
+    border-color: #0f766e !important;
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.14), 0 14px 32px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* ---------- NORMAL BUTTON / ANALYZE BUTTON ---------- */
+.stButton > button {
+    background: linear-gradient(135deg, #0f766e 0%, #0b7285 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 16px !important;
+    padding: 13px 34px !important;
+    min-width: 150px !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease;
+    box-shadow: 0 12px 24px rgba(11, 114, 133, 0.22) !important;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, #115e59 0%, #095c6b 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(11, 114, 133, 0.28) !important;
 }
 
 /* ---------- TABS ---------- */
 button[role="tab"] {
-    color: black !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
 }
 
 button[role="tab"][aria-selected="true"] {
-    color: #7c3aed !important;
-    border-bottom: 2px solid #7c3aed !important;
+    color: #0f766e !important;
+    border-bottom: 3px solid #0f766e !important;
 }
 
 /* ---------- METRICS ---------- */
 [data-testid="stMetric"] {
-    color: black !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    padding: 22px !important;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.07) !important;
 }
 
-/* ---------- ALERT BOXES ---------- */
+/* ---------- ALERTS / CHARTS ---------- */
 .stAlert {
-    color: black !important;
+    border-radius: 16px !important;
 }
 
-/* ---------- CARD STYLE ---------- */
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+[data-testid="stPlotlyChart"] {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 12px;
 }
 
-.card h3 {
-    margin-bottom: 10px;
+/* ---------- SPACING ---------- */
+.element-container {
+    margin-bottom: 18px;
 }
 
-.card h4 {
-    margin-top: 15px;
-    color: #7c3aed;
+/* ---------- MOBILE ---------- */
+@media (max-width: 900px) {
+    div[data-testid="stHorizontalBlock"]:has(.brand-wrap) {
+        padding: 20px;
+    }
+
+    .brand-title {
+        font-size: 30px;
+    }
+
+    .brand-subtitle {
+        display: none;
+    }
+
+    .logo-img {
+        width: 46px;
+        height: 46px;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(.brand-wrap) .stButton > button {
+        font-size: 14px !important;
+        padding: 9px 12px !important;
+        min-width: 95px !important;
+    }
+
+    .hero h1,
+    .page-hero h2 {
+        font-size: 36px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+        padding: 24px !important;
+    }
+}
+.feature-box {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    padding: 28px !important;
+    min-height: 170px;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.07) !important;
+    transition: all 0.25s ease;
 }
 
-.card p {
-    font-size: 16px;
-    margin: 6px 0;
+.feature-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.11) !important;
 }
 
-/* ---------- HEADER TITLE (OPTIONAL) ---------- */
-.brand {
-    font-size: 40px;
-    font-weight: 700;
-    text-align: center;
+.feature-box h4 {
+    margin-top: 0 !important;
+    color: #0f766e !important;
+    font-size: 22px !important;
 }
 
-.brand-accent {
-    color: #7c3aed;
+.feature-box p {
+    color: #64748b !important;
+    font-size: 16px !important;
+    line-height: 1.6;
 }
