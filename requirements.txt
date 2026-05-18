@@ -1,11 +1,8 @@
 streamlit
-langdetect
 textstat
 vaderSentiment
 plotly
 pandas
-transformers
-torch
 deep-translator
 fasttext-wheel
 numpy==1.26.4
