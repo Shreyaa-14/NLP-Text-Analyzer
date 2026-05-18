@@ -12,25 +12,51 @@ from utils.readability import analyze_readability
 from utils.translator import translate_to_english
 
 
+# ---------------- LOAD CSS ----------------
 def load_css():
     css_path = os.path.join(os.path.dirname(__file__), "assets", "style.css")
     with open(css_path, encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
+# ---------------- IMAGE TO BASE64 ----------------
 def img_to_base64(path):
     with open(path, "rb") as img:
         return base64.b64encode(img.read()).decode()
 
 
-st.set_page_config(page_title="Text Analyzer", layout="wide")
+# ---------------- FLAG HTML ----------------
+def flag_html(flag_url, width=32):
+    if flag_url:
+        return (
+            f'<img src="{flag_url}" width="{width}" '
+            f'style="vertical-align:middle; margin-right:10px; border-radius:3px;">'
+        )
+    return "🌐"
+
+
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(
+    page_title="Text Analyzer",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 load_css()
 
+
+# ---------------- SESSION STATE ----------------
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+
+# ---------------- LOGO ----------------
 logo_path = os.path.join(os.path.dirname(__file__), "assets", "logo.png")
 logo_base64 = img_to_base64(logo_path)
+
 
 # ---------------- HEADER ----------------
 col1, col2 = st.columns([4, 6])
@@ -61,10 +87,48 @@ with col2:
     if nav4.button("About", key="nav_about"):
         st.session_state.page = "About"
 
+
+# ---------------- SIDEBAR HISTORY ----------------
+with st.sidebar:
+    st.markdown("## 📚 Analysis History")
+
+    if len(st.session_state.history) == 0:
+        st.info("No history yet.")
+    else:
+        for i, item in enumerate(reversed(st.session_state.history), start=1):
+            title = f"{i}. {item['language']} | {item['bias']}"
+
+            with st.expander(title):
+                preview_text = (
+                    item["text"][:250] + "..."
+                    if len(item["text"]) > 250
+                    else item["text"]
+                )
+
+                st.write("**Text:**")
+                st.write(preview_text)
+
+                st.markdown(
+                    f"**Language:** {flag_html(item.get('flag', ''), 24)} {item['language']}",
+                    unsafe_allow_html=True
+                )
+                st.write(f"**Confidence:** {item['confidence']}%")
+                st.write(f"**Bias:** {item['bias']}")
+                st.write(f"**Readability:** {item['readability']}%")
+                st.write(f"**Level:** {item['level']}")
+
+    st.markdown("---")
+
+    if st.button("Clear History", key="clear_history_btn"):
+        st.session_state.history = []
+        if "results" in st.session_state:
+            del st.session_state["results"]
+        st.rerun()
+
+
 page = st.session_state.page
 
 
-# ---------------- HOME ----------------
 # ---------------- HOME ----------------
 if page == "Home":
 
@@ -146,7 +210,7 @@ elif page == "Analyze":
         with st.spinner("Analyzing..."):
             time.sleep(1)
 
-        # -------- NLP LOGIC UNCHANGED --------
+        # -------- NLP LOGIC --------
         lang, flag, lang_conf = detect_language(text)
 
         translated_text = translate_to_english(text) if lang != "English" else text
@@ -165,13 +229,18 @@ elif page == "Analyze":
         else:
             level = "Difficult"
 
-        st.session_state["results"] = {
-            "language": f"{flag} {lang}",
+        current_result = {
+            "text": text,
+            "language": lang,
+            "flag": flag,
             "confidence": round(min(lang_conf, 100), 2),
             "bias": bias_label,
             "readability": readability["Reading Ease"],
             "level": level
         }
+
+        st.session_state["results"] = current_result
+        st.session_state.history.append(current_result)
 
         tab1, tab2, tab3 = st.tabs(["Language", "Bias", "Readability"])
 
@@ -179,7 +248,10 @@ elif page == "Analyze":
             st.markdown(f"""
 <div class="card result-card">
     <h3>Language Detection</h3>
-    <p>{flag} <b>{lang}</b> ({lang_conf}%)</p>
+    <p>
+        {flag_html(flag, 32)}
+        <b>{lang}</b> ({lang_conf}%)
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -202,7 +274,7 @@ elif page == "Analyze":
             })
 
             fig = px.bar(df, x="Type", y="Score", text="Score", color="Type")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
         with tab3:
             st.markdown("""
@@ -242,7 +314,20 @@ elif page == "Overview":
 
         c1, c2, c3, c4 = st.columns(4)
 
-        c1.metric("Language", data["language"])
+        # Custom language metric card with same height as other metric cards
+        c1.markdown(
+            f"""
+<div class="metric-card-custom">
+    <p class="metric-label-custom">Language</p>
+    <div class="metric-value-custom">
+        {flag_html(data.get('flag', ''), 30)}
+        <span>{data['language']}</span>
+    </div>
+</div>
+""",
+            unsafe_allow_html=True
+        )
+
         c2.metric("Confidence", f"{data['confidence']}%")
         c3.metric("Bias", data["bias"])
         c4.metric("Readability", f"{data['readability']}%")
@@ -255,7 +340,7 @@ elif page == "Overview":
         })
 
         fig = px.bar(df, x="Metric", y="Value", text="Value", color="Metric")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         st.markdown("### Insight")
 
@@ -266,14 +351,20 @@ elif page == "Overview":
 
         if "Positive" in data["bias"]:
             st.success("Tone is positive")
+        elif "Negative" in data["bias"]:
+            st.error("Tone is negative")
         else:
-            st.info("Tone is neutral or negative")
+            st.info("Tone is neutral")
 
         st.markdown("## Final Summary")
 
         st.markdown(f"""
 <div class="card">
-    <p><b>Language:</b> {data['language']} ({data['confidence']}%)</p>
+    <p>
+        <b>Language:</b>
+        {flag_html(data.get('flag', ''), 28)}
+        {data['language']} ({data['confidence']}%)
+    </p>
     <p><b>Bias:</b> {data['bias']}</p>
     <p><b>Readability:</b> {data['readability']}%</p>
     <p><b>Level:</b> {data['level']}</p>
@@ -292,6 +383,9 @@ elif page == "About":
 
 <div class="card">
     <h3>About Text Analyzer</h3>
-    <p>This NLP Analyzer performs language detection, translation, bias analysis, and readability scoring using Python-based NLP tools.</p>
+    <p>
+    This NLP Analyzer performs language detection, translation, bias analysis,
+    and readability scoring using Python-based NLP tools.
+    </p>
 </div>
 """, unsafe_allow_html=True)

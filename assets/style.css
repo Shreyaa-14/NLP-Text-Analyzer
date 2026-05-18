@@ -1,12 +1,26 @@
 /* ---------- STREAMLIT CLEANUP ---------- */
+
+/* Keep Streamlit header visible enough so sidebar open/close button works */
 header[data-testid="stHeader"] {
-    display: none;
+    background: transparent !important;
+    height: 2.8rem !important;
 }
 
+/* Keep sidebar visible */
 section[data-testid="stSidebar"] {
-    display: none;
+    display: block !important;
+    background: linear-gradient(180deg, #ffffff 0%, #eef7f6 100%) !important;
+    border-right: 1px solid #dbe4ea !important;
+    box-shadow: 12px 0 35px rgba(15, 23, 42, 0.08) !important;
 }
 
+/* Sidebar inner spacing */
+section[data-testid="stSidebar"] > div {
+    background: transparent !important;
+    padding-top: 30px !important;
+}
+
+/* Main page spacing */
 .block-container {
     padding-top: 0 !important;
     padding-left: 0 !important;
@@ -20,7 +34,8 @@ section[data-testid="stSidebar"] {
         linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
 }
 
-body, p, span, div, label, h1, h2, h3, h4, li {
+/* ---------- GLOBAL TEXT ---------- */
+body, p, span, label, h1, h2, h3, h4, li {
     color: #0f172a !important;
     font-family: "Segoe UI", Arial, sans-serif;
 }
@@ -57,6 +72,7 @@ div[data-testid="stHorizontalBlock"]:has(.brand-wrap) {
     font-weight: 850;
     letter-spacing: -1px;
     line-height: 1;
+    color: #0f172a !important;
 }
 
 .brand-subtitle {
@@ -81,7 +97,7 @@ div[data-testid="stHorizontalBlock"]:has(.brand-wrap) .stButton > button {
     min-width: 135px !important;
     white-space: nowrap !important;
     font-size: 18px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04) !important;
     transition: all 0.2s ease;
 }
@@ -191,37 +207,31 @@ hr,
 }
 
 /* ---------- FEATURE CARDS ---------- */
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin: 28px 0;
-}
-
 .feature-box {
-    background: #f8fafc !important;
+    background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 20px !important;
-    padding: 24px !important;
-    min-height: 150px;
+    padding: 28px !important;
+    min-height: 170px;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.07) !important;
     transition: all 0.25s ease;
 }
 
 .feature-box:hover {
     transform: translateY(-4px);
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.11) !important;
 }
 
 .feature-box h4 {
     margin-top: 0 !important;
-    margin-bottom: 10px !important;
     color: #0f766e !important;
+    font-size: 22px !important;
 }
 
 .feature-box p {
-    font-size: 16px !important;
     color: #64748b !important;
-    margin: 0 !important;
+    font-size: 16px !important;
+    line-height: 1.6;
 }
 
 /* ---------- TEXT AREA ---------- */
@@ -264,7 +274,7 @@ hr,
     white-space: nowrap !important;
     text-align: center !important;
     font-size: 17px !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     transition: all 0.2s ease;
     box-shadow: 0 12px 24px rgba(11, 114, 133, 0.22) !important;
 }
@@ -313,6 +323,98 @@ button[role="tab"][aria-selected="true"] {
     margin-bottom: 18px;
 }
 
+/* ---------- SIDEBAR HISTORY DESIGN ---------- */
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] div {
+    color: #0f172a !important;
+}
+
+section[data-testid="stSidebar"] h2 {
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #0f766e !important;
+    margin-bottom: 18px !important;
+}
+
+/* Sidebar expander card */
+section[data-testid="stSidebar"] details {
+    background: #ffffff !important;
+    border: 1px solid #dbe4ea !important;
+    border-radius: 16px !important;
+    margin-bottom: 12px !important;
+    padding: 6px !important;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+section[data-testid="stSidebar"] summary {
+    font-weight: 900 !important;
+    color: #0f172a !important;
+}
+
+/* Sidebar buttons bold and visible */
+section[data-testid="stSidebar"] .stButton > button {
+    background: linear-gradient(135deg, #0f766e 0%, #0b7285 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 14px !important;
+    padding: 12px 18px !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    width: 100% !important;
+    box-shadow: 0 10px 22px rgba(11, 114, 133, 0.22) !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: linear-gradient(135deg, #115e59 0%, #095c6b 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+/* Sidebar alert styling */
+section[data-testid="stSidebar"] .stAlert {
+    background: #e6f6f4 !important;
+    border: 1px solid #bde7e2 !important;
+    color: #0f172a !important;
+    border-radius: 14px !important;
+}
+
+/* ---------- SIDEBAR OPEN / CLOSE BUTTON FIX ---------- */
+
+/* Newer Streamlit collapsed sidebar button */
+button[data-testid="collapsedControl"],
+[data-testid="collapsedControl"],
+button[kind="header"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 999999 !important;
+}
+
+/* Sidebar toggle icon styling */
+[data-testid="collapsedControl"] {
+    position: fixed !important;
+    top: 16px !important;
+    left: 16px !important;
+    background: #0f766e !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 12px !important;
+    width: 44px !important;
+    height: 44px !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22) !important;
+}
+
+[data-testid="collapsedControl"] svg {
+    stroke: #ffffff !important;
+}
+
+/* Sidebar close button */
+section[data-testid="stSidebar"] button svg {
+    stroke: #0f172a !important;
+}
+
 /* ---------- MOBILE ---------- */
 @media (max-width: 900px) {
     div[data-testid="stHorizontalBlock"]:has(.brand-wrap) {
@@ -343,39 +445,48 @@ button[role="tab"][aria-selected="true"] {
         font-size: 36px;
     }
 
-    .feature-grid {
-        grid-template-columns: 1fr;
-    }
-
     .card {
         margin-left: 16px !important;
         margin-right: 16px !important;
         padding: 24px !important;
     }
 }
-.feature-box {
+
+/* ---------- CUSTOM LANGUAGE METRIC CARD ---------- */
+.metric-card-custom {
     background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 20px !important;
-    padding: 28px !important;
-    min-height: 170px;
+    padding: 22px !important;
+    min-height: 118px !important;
+    height: 118px !important;
     box-shadow: 0 14px 32px rgba(15, 23, 42, 0.07) !important;
-    transition: all 0.25s ease;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
 }
 
-.feature-box:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.11) !important;
-}
-
-.feature-box h4 {
-    margin-top: 0 !important;
-    color: #0f766e !important;
-    font-size: 22px !important;
-}
-
-.feature-box p {
-    color: #64748b !important;
+.metric-label-custom {
     font-size: 16px !important;
-    line-height: 1.6;
+    margin: 0 0 12px 0 !important;
+    color: #0f172a !important;
+}
+
+.metric-value-custom {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-size: 34px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.metric-value-custom img {
+    width: 34px !important;
+    height: auto !important;
+    border-radius: 3px !important;
 }

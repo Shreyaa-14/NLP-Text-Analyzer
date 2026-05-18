@@ -2,9 +2,9 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 analyzer = SentimentIntensityAnalyzer()
 
-# Hindi sentiment words
 HINDI_POSITIVE = ["अच्छा", "पसंद", "खुश", "बढ़िया", "शानदार"]
 HINDI_NEGATIVE = ["बुरा", "नफरत", "घटिया", "बेकार", "खराब"]
+
 
 def detect_bias(text):
     text_lower = text.lower()
@@ -16,27 +16,41 @@ def detect_bias(text):
         neg = sum(word in text for word in HINDI_NEGATIVE)
 
         if pos > neg:
-            label = "Positive :) (80%)"
-            return label, {"pos": 1, "neu": 0, "neg": 0, "compound": 0.8}, 80
+            label = "Positive"
+            return label, {"Positive": 80, "Neutral": 20, "Negative": 0}, 80
 
         elif neg > pos:
-            label = "Toxic / Negative :( (80%)"
-            return label, {"pos": 0, "neu": 0, "neg": 1, "compound": -0.8}, 20
+            label = "Negative"
+            return label, {"Positive": 0, "Neutral": 20, "Negative": 80}, 80
 
         else:
-            return "Neutral :| (50%)", {"pos": 0, "neu": 1, "neg": 0, "compound": 0}, 50
+            label = "Neutral"
+            return label, {"Positive": 0, "Neutral": 100, "Negative": 0}, 100
 
-    # English (VADER)
+    # English / translated text sentiment
     score = analyzer.polarity_scores(text)
     compound = score["compound"]
 
-    bias_percent = round((compound + 1) * 50, 2)
+    positive_score = round(score["pos"] * 100, 2)
+    neutral_score = round(score["neu"] * 100, 2)
+    negative_score = round(score["neg"] * 100, 2)
 
     if compound >= 0.05:
-        label = f"Non-Toxic / Positive ({bias_percent}%)"
-    elif compound <= -0.05:
-        label = f"Toxic / Negative ({bias_percent}%)"
-    else:
-        label = f"Neutral ({bias_percent}%)"
+        label = "Positive"
+        final_percent = positive_score
 
-    return label, score, bias_percent
+    elif compound <= -0.05:
+        label = "Negative"
+        final_percent = negative_score
+
+    else:
+        label = "Neutral"
+        final_percent = neutral_score
+
+    bias_score = {
+        "Positive": positive_score,
+        "Neutral": neutral_score,
+        "Negative": negative_score
+    }
+
+    return f"{label} ({final_percent}%)", bias_score, final_percent
